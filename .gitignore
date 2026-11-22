@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+.ipynb_checkpoints/
+# raw + cached data (download per README)
+data/online_retail_II.xlsx
+data/online_retail_ii.zip
+data/transactions_clean.csv

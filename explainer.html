@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChurnBoost AI – Explained Simply</title>
+<link rel="icon" href="assets/favicon.png">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Instrument+Sans:wght@400;500;600&display=swap');
+:root{--bg:#f4f1ea;--panel:#fff;--ink:#1d2433;--muted:#5d6678;--line:#e3ded2;--accent:#25586b;--high:#b4372c;--med:#d9962b;--low:#3b8b6e;--ease:cubic-bezier(.16,1,.3,1)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 'Instrument Sans',system-ui,sans-serif}
+::selection{background:var(--accent);color:#f4f1ea}
+h1,h2,h3{font-family:'Bricolage Grotesque','Instrument Sans',sans-serif;letter-spacing:-.02em;line-height:1.12;text-wrap:balance;margin:0}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px}
+header.top{padding:64px 0 36px}
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+h1{font-size:clamp(2.2rem,6vw,3.4rem)}
+.lede{font-size:1.2rem;color:var(--muted);max-width:60ch;margin:16px 0 0}
+nav.toc{position:sticky;top:0;z-index:5;background:rgba(244,241,234,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:6px;padding-bottom:6px}
+nav.toc a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.9rem;font-weight:500;padding:8px 12px;border-radius:8px;transition:background .16s var(--ease),color .16s var(--ease)}
+nav.toc a:hover{background:rgba(37,88,107,.08);color:var(--ink)}
+section{padding:54px 0 8px}
+h2{font-size:clamp(1.6rem,4vw,2.1rem);margin-bottom:14px}
+h3{font-size:1.2rem;margin:26px 0 8px}
+p{margin:0 0 14px;max-width:68ch}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:18px 0;box-shadow:0 1px 2px rgba(29,36,51,.04),0 4px 14px rgba(29,36,51,.04)}
+.card.tip{background:#eef3f4;border-color:#cfdde1}
+.card h3{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:18px 0}
+.grid .card{margin:0}
+.big{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:2.1rem;line-height:1;font-variant-numeric:tabular-nums}
+.small{color:var(--muted);font-size:.92rem}
+code{font-family:ui-monospace,Menlo,monospace;font-size:.88em;background:#ebe7dc;padding:1px 6px;border-radius:5px}
+pre{background:#1d2433;color:#e8e6df;padding:16px 18px;border-radius:12px;overflow-x:auto;font-size:.85rem;line-height:1.55}
+pre code{background:none;padding:0;color:inherit}
+table{width:100%;border-collapse:collapse;margin:14px 0;background:var(--panel);border-radius:12px;overflow:hidden;border:1px solid var(--line);font-size:.95rem}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#faf8f3;font-weight:600}
+tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums}
+ol.steps{counter-reset:s;list-style:none;padding:0;margin:18px 0}
+ol.steps li{counter-increment:s;position:relative;padding:4px 0 16px 52px}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:0;width:36px;height:36px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:600;font-family:'Bricolage Grotesque',sans-serif}
+ol.steps b{display:block}
+figure{margin:20px 0}
+figure img{width:100%;height:auto;border-radius:12px;border:1px solid var(--line);background:#fff;display:block}
+figcaption{color:var(--muted);font-size:.9rem;margin-top:8px}
+/* timeline diagram */
+.timeline{display:flex;margin:22px 0 8px;border-radius:12px;overflow:hidden;border:1px solid var(--line);font-size:.9rem;font-weight:500}
+.timeline div{padding:18px 16px;text-align:center}
+.t-past{flex:3;background:#dfe9ec;color:#1b4452}
+.t-future{flex:1;background:#f4dcd8;color:#7d261d}
+.timeline-labels{display:flex;justify-content:space-between;color:var(--muted);font-size:.82rem;margin-bottom:14px}
+/* tiers */
+.tiers{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.pill{color:#fff;border-radius:999px;padding:6px 16px;font-weight:600;font-size:.92rem}
+.pill.h{background:var(--high)}.pill.m{background:var(--med)}.pill.l{background:var(--low)}
+/* tiny trees */
+.forest{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0;align-items:stretch}
+.tree{flex:1;min-width:130px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;font-size:.85rem;text-align:center}
+.tree b{display:block;font-size:1.3rem;font-family:'Bricolage Grotesque',sans-serif}
+.tree.sum{background:var(--accent);color:#fff;border-color:var(--accent)}
+/* confusion matrix */
+.cm{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;max-width:520px;margin:16px 0;font-size:.9rem}
+.cm div{padding:14px 12px;border-radius:10px;text-align:center}
+.cm .h{background:transparent;color:var(--muted);font-weight:600;padding:6px}
+.cm .ok{background:#dcebe4}.cm .bad{background:#f4dcd8}
+.cm b{display:block;font-size:1.5rem;font-family:'Bricolage Grotesque',sans-serif}
+.cm .side{writing-mode:horizontal-tb;background:transparent;color:var(--muted);font-weight:600;align-self:center;padding:4px}
+details{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 18px;margin:12px 0}
+summary{cursor:pointer;font-weight:600}
+details[open] summary{margin-bottom:8px}
+footer{padding:60px 0 80px;color:var(--muted);font-size:.92rem}
+
+/* architecture diagram */
+.flow{display:flex;flex-direction:column;align-items:stretch;margin:22px 0}
+.node{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px;box-shadow:0 1px 2px rgba(29,36,51,.04)}
+.node b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:1.05rem}
+.node .f{font-size:.82rem;color:var(--muted);font-family:ui-monospace,Menlo,monospace}
+.node .d{font-size:.92rem;margin-top:4px}
+.node.data{background:#f6f1e3}.node.code{border-color:#bcd0d6}.node.out{background:#eef3f4;border-color:#cfdde1}.node.ui{background:var(--accent);border-color:var(--accent);color:#fff}
+.node.ui .f,.node.ui .d{color:#dbe8ec}
+.arrow{align-self:center;height:26px;width:2px;background:var(--line);position:relative;margin:2px 0}
+.arrow::after{content:"";position:absolute;left:-4px;bottom:-1px;border:5px solid transparent;border-top:7px solid var(--line);border-bottom:0}
+.arrow span{position:absolute;left:12px;top:3px;font-size:.78rem;color:var(--muted);white-space:nowrap}
+@media (max-width:640px){.arrow{height:auto;min-height:26px;padding:0}.arrow span{position:static;display:block;margin:0 0 8px 12px;white-space:normal;max-width:70vw}.arrow::after{display:none}table{display:block;overflow-x:auto}}
+.branch{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:640px){.branch{grid-template-columns:1fr}}
+.side{border:1px dashed #b9b2a0;background:transparent}
+/* gentle reveal on scroll */
+.reveal{animation:rise .7s var(--ease) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+@supports (animation-timeline:view()){.reveal{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 35%}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <div class="brand">
+    <svg width="48" height="48" viewBox="0 0 52 52" aria-hidden="true"><rect width="52" height="52" rx="13" fill="#25586b"/><polyline points="11,17 21,28 28,22 41,37" fill="none" stroke="#f4f1ea" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="41" cy="37" r="4" fill="#e0a43a"/></svg>
+    <span class="small">Project walkthrough</span>
+  </div>
+  <h1>ChurnBoost AI, explained in plain English</h1>
+  <p class="lede">A machine-learning project that looks at what online shoppers have bought in the past and predicts which ones are about to stop buying, and how much money that would cost the shop.</p>
+</div></header>
+
+<nav class="toc" aria-label="Sections"><div class="wrap">
+  <a href="#problem">The problem</a><a href="#architecture">Architecture</a><a href="#data">The data</a><a href="#rfm">RFM</a><a href="#label">Defining churn</a>
+  <a href="#model">The model</a><a href="#tuning">Tuning</a><a href="#results">Results</a><a href="#revenue">Revenue</a>
+  <a href="#dashboard">Dashboard</a><a href="#code">Code map</a><a href="#limits">Limits</a>
+</div></nav>
+
+<main class="wrap">
+
+<section id="problem" class="reveal">
+  <h2>1. The problem: customers quietly leave</h2>
+  <p>Imagine a shop owner who notices that a regular customer hasn't visited for months. By the time anyone realises, the customer is gone. In online shopping this is called <b>churn</b>: a customer stops buying.</p>
+  <p>Winning a new customer usually costs far more than keeping an existing one. So if we could <b>predict who is likely to leave</b>, the shop could send them a discount or a reminder <i>before</i> they disappear, and spend that effort on the customers worth the most money.</p>
+  <div class="card tip"><h3>What this project does, in one breath</h3>
+  <p style="margin:0">It reads a shop's past sales, gives every customer a <b>churn probability</b> (for example "83% likely to leave"), estimates <b>how much money</b> each customer would bring in next, and shows it all in an interactive dashboard.</p></div>
+</section>
+
+<section id="architecture" class="reveal">
+  <h2>2. Architecture: how the pieces fit together</h2>
+  <p>The project is a small <b>pipeline</b>: data goes in at the top, passes through a series of steps, and the results come out as a dashboard. The key design idea is to <b>train once, then serve</b>. The slow, heavy work (cleaning, tuning, training) happens in one script and its answers are saved to files. The dashboard only reads those files, so it opens instantly and never retrains.</p>
+
+  <div class="flow" role="img" aria-label="Pipeline diagram from raw data through cleaning, features, training, saved artifacts and the dashboard">
+    <div class="node data"><b>1. Raw data</b><span class="f">data/online_retail_II.xlsx</span><div class="d">~1.07 million sales rows from the UCI repository.</div></div>
+    <div class="arrow"><span>loads, cleans, caches</span></div>
+    <div class="node code"><b>2. Cleaning</b><span class="f">src/data_loader.py → data/transactions_clean.csv</span><div class="d">Drops cancellations, missing customers, bad rows and duplicates. The cleaned file is cached so the slow Excel read happens once.</div></div>
+    <div class="arrow"><span>cleaned transactions</span></div>
+    <div class="node code"><b>3. Features and labels</b><span class="f">src/features.py</span><div class="d">Splits time at the cutoff. Before it: RFM and 4 more clues per customer. After it: did they buy again (the churn answer) and how much did they spend.</div></div>
+    <div class="arrow"><span>one row per customer: 7 features + churn + future spend</span></div>
+    <div class="node code"><b>4. Tune and train</b><span class="f">src/train.py</span><div class="d">Two separate models are trained from the same customer table:</div></div>
+    <div class="arrow" style="height:14px"></div>
+    <div class="branch">
+      <div class="node code"><b>Churn classifier</b><span class="f">XGBClassifier</span><div class="d">Predicts <i>will they leave?</i> as a probability. Tuned for class weight, then a 40-candidate hyperparameter search. Trained on all customers.</div></div>
+      <div class="node code"><b>Revenue regressor</b><span class="f">XGBRegressor</span><div class="d">Predicts <i>how much would they spend if they stay?</i> Trained only on customers who did come back, on a log scale.</div></div>
+    </div>
+    <div class="arrow"><span>combine the two</span></div>
+    <div class="node code"><b>5. Score every customer</b><span class="f">src/train.py</span><div class="d">Churn probability (out-of-fold), risk tier, expected revenue and revenue at risk, plus hold-out metrics.</div></div>
+    <div class="arrow"><span>saved to disk</span></div>
+    <div class="node out"><b>6. Artifacts: the hand-off point</b><span class="f">artifacts/</span><div class="d"><code>models.joblib</code> (both fitted models) · <code>customers_scored.csv</code> (every customer's scores) · <code>metrics.json</code> (scores, confusion matrix, feature importance, best parameters)</div></div>
+    <div class="arrow"><span>read-only</span></div>
+    <div class="node ui"><b>7. Dashboard</b><span class="f">app.py + assets/style.css</span><div class="d">Loads the artifacts, applies your sidebar filters, converts £ to ₹ for display, and draws the charts and animations.</div></div>
+  </div>
+
+  <div class="node side" style="margin-bottom:6px"><b>Side branch: exploration and documentation</b><span class="f">notebooks/01_eda.ipynb → reports/*.png → explainer.html</span><div class="d">The notebook reads the cleaned data, draws Seaborn charts and saves them as images. This page shows those images. None of the model code depends on this branch.</div></div>
+
+  <h3>What each stage reads and writes</h3>
+  <table>
+    <tr><th>Stage</th><th>Reads</th><th>Writes</th></tr>
+    <tr><td><code>data_loader.py</code></td><td>the Excel file</td><td class="num"><code>transactions_clean.csv</code></td></tr>
+    <tr><td><code>features.py</code></td><td>cleaned transactions</td><td>a table in memory (one row per customer)</td></tr>
+    <tr><td><code>train.py</code></td><td>that table</td><td><code>models.joblib</code>, <code>customers_scored.csv</code>, <code>metrics.json</code></td></tr>
+    <tr><td><code>app.py</code></td><td>the three artifact files</td><td>nothing (display only)</td></tr>
+    <tr><td><code>01_eda.ipynb</code></td><td>cleaned transactions</td><td><code>reports/*.png</code></td></tr>
+  </table>
+
+  <h3>How the two models work together</h3>
+  <p>Neither model alone answers the business question. The classifier says <b>how likely</b> a customer is to leave; the regressor says <b>how much they are worth</b>. Multiplying them gives money at stake:</p>
+  <pre><code>customer table ──► churn classifier  ──► churn probability (p) ─┐
+                                                                    ├─► expected revenue = (1 − p) × spend
+customer table ──► revenue regressor ──► predicted spend if retained ┘   revenue at risk  =      p × spend</code></pre>
+
+  <h3>Design decisions worth knowing</h3>
+  <div class="grid">
+    <div class="card"><h3>Train once, serve many</h3><p class="small" style="margin:0">Training takes a minute or two; opening the dashboard takes a second. Saving the results to <code>artifacts/</code> separates the two, and also means anyone can inspect the numbers without running anything.</p></div>
+    <div class="card"><h3>No peeking at the future</h3><p class="small" style="margin:0">The cutoff date splits clues (past) from answers (future) in <code>features.py</code>, so the model can't cheat. Every later stage inherits that protection.</p></div>
+    <div class="card"><h3>Honest scoring</h3><p class="small" style="margin:0">Metrics come from a 20% hold-out that tuning never touched. Each customer's shown probability is out-of-fold: predicted by a model that never trained on them.</p></div>
+    <div class="card"><h3>Repeatable</h3><p class="small" style="margin:0">Every random choice uses seed 42, so re-running training gives the same splits and the same results.</p></div>
+    <div class="card"><h3>Currency only at the edge</h3><p class="small" style="margin:0">Models and saved files stay in pounds. The ₹ conversion (×110) is applied only when the dashboard displays numbers, and reversed before a what-if goes back to the model.</p></div>
+    <div class="card"><h3>What-if is the one live call</h3><p class="small" style="margin:0">Everything else on the dashboard is pre-computed. Moving a what-if slider is the only time the dashboard runs the saved classifier, on the spot, for one customer.</p></div>
+  </div>
+</section>
+
+<section id="data" class="reveal">
+  <h2>3. The data: a real online shop's sales log</h2>
+  <p>We use the public <b>UCI Online Retail II</b> dataset. It records every item sold by a UK-based online gift shop between <b>December 2009 and December 2011</b>. Many of the shop's customers are wholesalers.</p>
+  <table>
+    <tr><th>Column</th><th>What it means</th></tr>
+    <tr><td><code>Invoice</code></td><td>The order number (one order has many rows, one per product)</td></tr>
+    <tr><td><code>StockCode</code>, <code>Description</code></td><td>Which product was bought</td></tr>
+    <tr><td><code>Quantity</code>, <code>Price</code></td><td>How many, and the price of each (in British pounds)</td></tr>
+    <tr><td><code>InvoiceDate</code></td><td>When it was bought</td></tr>
+    <tr><td><code>Customer ID</code></td><td>Who bought it</td></tr>
+    <tr><td><code>Country</code></td><td>Where they live</td></tr>
+  </table>
+  <h3>Cleaning it up</h3>
+  <p>Real data is messy. Before anything else we throw away rows that would mislead the model:</p>
+  <ul>
+    <li>rows with <b>no customer ID</b>, because we cannot tell who bought them;</li>
+    <li><b>cancelled orders</b> (invoices starting with "C"), because those are returns, not purchases;</li>
+    <li>rows with a <b>zero or negative</b> quantity or price;</li>
+    <li>exact <b>duplicate</b> rows.</li>
+  </ul>
+  <figure><img src="reports/01_cleaning_funnel.png" alt="Bar chart of rows remaining after each cleaning step"><figcaption>How many rows survive each cleaning step.</figcaption></figure>
+  <div class="grid">
+    <div class="card"><div class="big">5,281</div><div class="small">customers left to analyse</div></div>
+    <div class="card"><div class="big">2 years</div><div class="small">of purchase history</div></div>
+    <div class="card"><div class="big">£ → ₹</div><div class="small">data is in pounds; the dashboard shows rupees at a fixed ₹110 per £1</div></div>
+  </div>
+  <figure><img src="reports/02_monthly_revenue.png" alt="Line chart of monthly revenue"><figcaption>Sales spike every autumn (gift season). This matters later; see the limitations.</figcaption></figure>
+</section>
+
+<section id="rfm" class="reveal">
+  <h2>4. Turning purchases into numbers: RFM</h2>
+  <p>A model can't read a sales log. It needs a few numbers that describe each customer. The classic trio in marketing is <b>RFM</b>:</p>
+  <div class="grid">
+    <div class="card"><h3>R: Recency</h3><p class="small" style="margin:0">How many days since they last bought? Someone who bought yesterday is warm; someone who bought a year ago is going cold.</p></div>
+    <div class="card"><h3>F: Frequency</h3><p class="small" style="margin:0">How many separate orders have they placed? Regulars come back; one-time buyers often don't.</p></div>
+    <div class="card"><h3>M: Monetary</h3><p class="small" style="margin:0">How much money have they spent in total? Big spenders matter more to the business.</p></div>
+  </div>
+  <p>We add four more clues: <code>tenure</code> (how long they've been a customer), <code>avg_order_value</code>, <code>avg_days_between_orders</code> (how often they typically shop), and <code>n_products</code> (how many different products they've tried). That gives <b>7 numbers per customer</b>.</p>
+  <figure><img src="reports/06_churn_by_recency.png" alt="Churn rate rising with days since last purchase"><figcaption>The data confirms the intuition: customers silent for under a month churn 25% of the time; silent for over a year, 89%.</figcaption></figure>
+  <figure><img src="reports/07_churn_by_frequency.png" alt="Churn rate falling with number of orders"><figcaption>One-time buyers churn 80% of the time; customers with 9+ orders only 17%.</figcaption></figure>
+</section>
+
+<section id="label" class="reveal">
+  <h2>5. How do we know who "churned"? The time split</h2>
+  <p>To teach a model, we need examples where we already know the answer. So we pretend to stand at a past date, the <b>cutoff (10 Sept 2011)</b>, and ask two questions:</p>
+  <div class="timeline"><div class="t-past">PAST: what we show the model<br><span class="small">RFM features, from purchases before the cutoff</span></div><div class="t-future">FUTURE: the answer<br><span class="small">next 90 days</span></div></div>
+  <div class="timeline-labels"><span>Dec 2009</span><span>◆ cutoff, 10 Sep 2011</span><span>9 Dec 2011</span></div>
+  <ul>
+    <li>If a customer made <b>no purchase in the 90 days after the cutoff</b> → label them <b>churned (1)</b>.</li>
+    <li>If they bought something → <b>retained (0)</b>, and we also record how much they spent.</li>
+  </ul>
+  <div class="card tip"><h3>Why not just use all the data at once?</h3>
+  <p style="margin:0">That would be like letting a student see the exam answers while studying. If the "features" included purchases from the same 90 days we're trying to predict, the model would look brilliant but be useless on real, unseen customers. Keeping the past (clues) and the future (answer) strictly apart is called <b>avoiding data leakage</b>.</p></div>
+  <p>Result: <b>56.6% of customers churned</b>, so the two groups are fairly balanced.</p>
+</section>
+
+<section id="model" class="reveal">
+  <h2>6. The model: XGBoost</h2>
+  <p>We use <b>XGBoost</b>, a very popular and accurate algorithm for tables of numbers. Here's the idea without any maths:</p>
+  <p>A <b>decision tree</b> is a flowchart of yes/no questions, like "Has this customer been silent for over 200 days? Yes → has she ordered more than 5 times? No → likely to churn." One small tree is a weak predictor. XGBoost builds <b>hundreds of small trees, one after another, where each new tree focuses on fixing the mistakes of the previous ones</b>, then adds up all their votes.</p>
+  <div class="forest">
+    <div class="tree">Tree 1<b>+0.8</b>quick rough guess</div>
+    <div class="tree">Tree 2<b>+0.3</b>fixes tree 1's mistakes</div>
+    <div class="tree">Tree 3<b>-0.1</b>fixes the rest</div>
+    <div class="tree">… 150 trees</div>
+    <div class="tree sum">Total<b>→ 83%</b>churn probability</div>
+  </div>
+  <p class="small">Numbers above are illustrative, to show the idea.</p>
+  <p>We split customers into <b>80% for training</b> and <b>20% held back for testing</b>. The model never sees the 20% while learning, so its score on them is an honest estimate of how it would do on new customers.</p>
+  <h3>Which clues matter most?</h3>
+  <table>
+    <tr><th>Feature</th><th>Importance</th></tr>
+    <tr><td>Recency</td><td class="num">32%</td></tr><tr><td>Frequency</td><td class="num">25%</td></tr><tr><td>Monetary</td><td class="num">12%</td></tr>
+    <tr><td>Avg. days between orders</td><td class="num">10%</td></tr><tr><td>Number of products</td><td class="num">9%</td></tr>
+    <tr><td>Tenure</td><td class="num">7%</td></tr><tr><td>Avg. order value</td><td class="num">5%</td></tr>
+  </table>
+  <p class="small">This is how the model "identifies churn indicators": recency and frequency are by far the strongest warning signs.</p>
+</section>
+
+<section id="tuning" class="reveal">
+  <h2>7. Tuning: making the model better</h2>
+  <h3>Step A: class weights (handling imbalance)</h3>
+  <p>If one outcome is rare, a lazy model can score well by always guessing the common one. A <b>class weight</b> tells the model "mistakes on the rare group count extra". We try four weights (<code>scale_pos_weight</code>) and keep the one with the best cross-validated score (1.15).</p>
+  <div class="card"><b>Honest note:</b> here churn is the <i>majority</i> (56.6%), so imbalance is mild and the weight barely changes anything (0.808 → 0.809). It's implemented and tested, but it isn't what improves this model.</div>
+  <h3>Step B: hyperparameter search</h3>
+  <p>A model has settings, like how deep each tree can grow, how fast it learns, and how many trees to build. These "knobs" are called <b>hyperparameters</b>. Instead of guessing, we run a <b>randomised search</b>: try 40 random combinations, test each with <b>5-fold cross-validation</b> (train on 4/5 of the data, test on the other 1/5, five times over), and keep the best.</p>
+  <table>
+    <tr><th>Setting</th><th>Before</th><th>After search</th></tr>
+    <tr><td>Trees</td><td class="num">300</td><td class="num">150</td></tr>
+    <tr><td>Learning rate</td><td class="num">0.05</td><td class="num">0.03</td></tr>
+    <tr><td>Data sampled per tree</td><td class="num">80%</td><td class="num">60%</td></tr>
+    <tr><td>Features sampled per tree</td><td class="num">80%</td><td class="num">60%</td></tr>
+    <tr><td>Min. child weight / gamma / L2 penalty</td><td class="num">defaults (1 / 0 / 1)</td><td class="num">3 / 2 / 1</td></tr>
+  </table>
+  <p>The tuned model is simpler (fewer trees, more regularisation) and scores better: <b>cross-validated PR-AUC rose from 0.809 to 0.822</b>.</p>
+</section>
+
+<section id="results" class="reveal">
+  <h2>8. How good is it?</h2>
+  <p>Scored on the 1,057 customers the model never saw:</p>
+  <div class="grid">
+    <div class="card"><div class="big">0.82</div><div class="small">ROC-AUC (1.0 is perfect, 0.5 is a coin flip)</div></div>
+    <div class="card"><div class="big">0.84</div><div class="small">PR-AUC (the right score when positives matter)</div></div>
+    <div class="card"><div class="big">74%</div><div class="small">Precision: of customers flagged as leaving, this many really did</div></div>
+    <div class="card"><div class="big">86%</div><div class="small">Recall: of customers who really left, this many were caught</div></div>
+  </div>
+  <h3>The scorecard, customer by customer</h3>
+  <div class="cm">
+    <div class="side"></div><div class="h">Model says: stays</div><div class="h">Model says: leaves</div>
+    <div class="side">Really stayed</div><div class="ok"><b>274</b>correct</div><div class="bad"><b>185</b>false alarm</div>
+    <div class="side">Really left</div><div class="bad"><b>84</b>missed</div><div class="ok"><b>514</b>caught</div>
+  </div>
+  <p class="small">Why accuracy isn't the headline: it hides which mistakes the model makes. A false alarm costs a needless discount; a missed churner costs a lost customer. Precision and recall show both sides.</p>
+  <figure><img src="reports/05_rfm_by_churn.png" alt="Box plots of RFM for churned and retained customers"><figcaption>Churned customers (red) have much higher recency (silent longer) and lower frequency and spend.</figcaption></figure>
+</section>
+
+<section id="revenue" class="reveal">
+  <h2>9. From "who will leave" to "how much money is at stake"</h2>
+  <p>Knowing a customer might leave isn't enough; a ₹500 customer and a ₹5 lakh customer need different attention. So there's a <b>second model</b> (an XGBoost regressor) that predicts <b>how much a customer would spend in the next 90 days if they stay</b>. Then:</p>
+  <pre><code>expected revenue = (1 − churn probability) × predicted spend
+revenue at risk  =      churn probability  × predicted spend</code></pre>
+  <p>Customers are then sorted into three risk tiers:</p>
+  <div class="tiers"><span class="pill h">High risk: 70%+</span><span class="pill m">Medium: 40–70%</span><span class="pill l">Low: under 40%</span></div>
+  <p>Finally, <b>"high-value at risk"</b> picks out High-risk customers who are also in the top quarter by historical spend: the ones worth a phone call.</p>
+  <div class="card tip"><h3>A detail that keeps it honest</h3><p style="margin:0">The churn probability shown for each customer comes from <b>out-of-fold prediction</b>: the model that scored that customer never saw them during training. Otherwise the dashboard would flatter itself.</p></div>
+</section>
+
+<section id="dashboard" class="reveal">
+  <h2>10. The dashboard</h2>
+  <p>Run <code>streamlit run app.py</code> and open <code>localhost:8501</code>. Four tabs:</p>
+  <table>
+    <tr><td><b>Overview</b></td><td>Headline numbers, customers by risk tier, forecast revenue per tier</td></tr>
+    <tr><td><b>Model performance</b></td><td>All the scores above, feature importance, confusion matrix, precision-recall curve</td></tr>
+    <tr><td><b>High-risk segments</b></td><td>RFM scatter plot coloured by risk, plus a downloadable "call these first" list</td></tr>
+    <tr><td><b>Customer lookup</b></td><td>Pick a customer, see their risk meter, and use sliders for a <b>what-if</b>: "what if they'd ordered 3 more times?"</td></tr>
+  </table>
+  <p class="small">All money is shown in Indian rupees (₹). The data is in pounds, so values are multiplied by a fixed rate of 110 for display only; the models themselves still work in pounds.</p>
+</section>
+
+<section id="code" class="reveal">
+  <h2>11. Where everything lives</h2>
+  <ol class="steps">
+    <li><b><code>src/data_loader.py</code></b>Loads the Excel file and applies the cleaning rules. Caches the result.</li>
+    <li><b><code>src/features.py</code></b>Builds the RFM features, the churn label and the future-revenue value, using the cutoff-date split.</li>
+    <li><b><code>src/train.py</code></b>Tunes class weight and hyperparameters, trains both models, evaluates on the hold-out set, scores every customer and saves everything to <code>artifacts/</code>.</li>
+    <li><b><code>notebooks/01_eda.ipynb</code></b>Exploratory analysis with Seaborn charts (saved in <code>reports/</code>).</li>
+    <li><b><code>app.py</code></b>The Streamlit dashboard; <code>assets/style.css</code> holds its look and animations.</li>
+  </ol>
+  <details><summary>Run it yourself</summary>
+<pre><code>pip install -r requirements.txt     # on macOS also: brew install libomp
+python -m src.train                  # trains and writes artifacts/
+streamlit run app.py                 # opens the dashboard</code></pre></details>
+  <h3>Tools used</h3>
+  <p><b>Python</b> · <b>Pandas</b> and <b>NumPy</b> for data wrangling · <b>Scikit-Learn</b> for splitting data, cross-validation and metrics · <b>XGBoost</b> for the models · <b>Seaborn</b> and <b>Matplotlib</b> for charts · <b>Streamlit</b> for the dashboard.</p>
+</section>
+
+<section id="limits" class="reveal">
+  <h2>12. What this project does <i>not</i> claim</h2>
+  <ul>
+    <li><b>"Churn" is a definition, not a fact.</b> It means "no purchase in 90 days". In a seasonal gift shop, someone who buys every December might be labelled churned in September.</li>
+    <li><b>One cutoff date.</b> The model is tested on a single time split; testing across several dates would be more convincing.</li>
+    <li><b>The revenue forecast is rough.</b> Spending is very uneven (a few huge wholesalers), so predicted amounts can be off by a lot for individual customers.</li>
+    <li><b>The exchange rate is fixed</b> at ₹110 per £1 for display, not a live rate.</li>
+    <li><b>It's 2009–2011 data.</b> It demonstrates the method; it says nothing about today's shoppers.</li>
+  </ul>
+</section>
+
+</main>
+
+<footer><div class="wrap">ChurnBoost AI · built with Python, Scikit-Learn, XGBoost, Pandas, NumPy, Seaborn &amp; Matplotlib. For the technical version, see <a href="README.md">README.md</a>.</div></footer>
+</body>
+</html>
