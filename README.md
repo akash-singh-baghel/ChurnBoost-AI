@@ -9,6 +9,24 @@ dashboard to explore the results.
 
 ---
 
+## Screenshots
+
+The Streamlit dashboard (`streamlit run app.py`). Amounts are shown in ₹.
+
+**Overview**: KPI row, customers by risk tier, forecast revenue by tier, churn-probability distribution
+![Overview tab](docs/screenshots/overview.png)
+
+**Model performance**: ROC-AUC / PR-AUC / precision / recall / F1, feature importance, confusion matrix, precision-recall curve
+![Model performance tab](docs/screenshots/model-performance.png)
+
+**High-risk segments**: RFM scatter coloured by risk tier, tier profiles and the high-value-at-risk list
+![High-risk segments tab](docs/screenshots/high-risk-segments.png)
+
+**Customer lookup**: animated risk meter, revenue figures and a what-if simulator
+![Customer lookup tab](docs/screenshots/customer-lookup.png)
+
+---
+
 ## 1. What it does
 
 1. **Cleans** the raw transaction log.
@@ -87,6 +105,7 @@ its results to `artifacts/`; the dashboard only reads them.
 churnboost-ai/
 ├── app.py                  # Streamlit dashboard
 ├── explainer.html          # plain-English walkthrough of the whole project (open in a browser)
+├── docs/screenshots/       # dashboard screenshots used in this README
 ├── assets/
 │   ├── style.css           # dashboard theme + animations
 │   └── favicon.png
